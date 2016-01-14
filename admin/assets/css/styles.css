@@ -1,0 +1,110 @@
+.navigation
+{
+	border-bottom: #000 solid 1px;
+	height:15%;
+	z-index: 9999;
+	position: fixed;
+	width: 100%;
+	background: #173653;
+}
+
+.side-navigation
+{
+	position:fixed;
+	top:25%;
+	left:1%;
+	right:75%;
+}
+
+.user-table
+{
+	position:absolute;
+	top:25%;
+	left:26%;
+	right:7%;
+	
+}
+.user-panel
+{
+	position: absolute;
+	left: 26%;
+	top: 45%;
+	right:20%;
+
+}
+.search-box
+{
+	position: absolute;
+	left: 0%;
+	top: 0%;
+	right: 50%;
+}
+.add-btn
+{
+	position: absolute;
+	left: 100%;
+	top: 0%;
+	right: 0%;
+}
+
+.search-text
+{
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	right: 50%;
+}
+
+.add-btn
+{
+	position: absolute;
+	top: 0%;
+	left: 70%;
+	right: 0%;
+	
+}
+.add-container
+{
+	
+	padding-top:0%;
+	padding-bottom:1%;
+	background: #f0f0f0;
+
+}
+.annoucement-container
+{
+	position:absolute;
+	top:25%;
+	left:26%;
+	right:7%;
+	background: #fff;
+	
+
+}
+.annoucement-details
+{
+	
+	padding-top:2%;
+	padding-left:2%;
+	padding-right:2%;
+	
+}
+
+.annoucement-details-container
+{
+	padding-top:0%;
+	padding-left:5%;
+	padding-right:5%;
+	background: #f0f0f0;
+	border-radius: 5px;
+	
+}
+
+.new-annoucement-container
+{
+	position:absolute;
+	top:25%;
+	left:29%;
+	right:5%;
+	
+}

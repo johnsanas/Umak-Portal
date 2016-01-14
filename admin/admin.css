@@ -1,0 +1,166 @@
+body
+{
+background:#2c2c2c;
+
+}
+
+.header
+{
+position:absolute;
+left:0%;
+right:0%;
+top:0%;
+width:auto;
+height: 15%;
+background: #34393d;
+}
+.sidenavigation table
+{
+position: absolute;
+}
+.sidenavigation
+{
+background: #34393d;
+position: absolute;
+left:5%;
+right:75%;
+top:30%;
+height:60%;
+width: auto;
+border-radius: 2px;
+
+}
+.navibutton:hover
+{
+	background: black;
+
+}
+
+
+.navibutton
+{cursor: pointer;
+
+background: #34393d; 
+border-color: black;
+
+height: 40px;
+width: 250px;
+color: white;
+font-size: 15px;
+}
+
+
+.infocontainer
+{
+background: #34393d;
+position: absolute;
+left:27%;
+right:15%;
+top:30%;
+height:60%;
+width: auto;
+border-radius: 2px;
+}
+
+.infocontainer table
+{
+	position: absolute;
+	top:4%;
+	left: 2%;
+	color:white	;
+	font-size:17px;
+}
+
+.btndelete
+{
+height: 20px;
+font-size: 12px;	
+cursor: pointer;
+background: black;
+color: white;
+}
+
+.btndelete:hover
+{
+	background: white;
+	color: black;
+	
+}
+
+
+.infocontaineredit
+{
+background: #34393d;
+position: absolute;
+left:27%;
+right:15%;
+top:30%;
+height:60%;
+width: auto;
+border-radius: 2px;
+}
+
+
+.infocontaineredit table
+{
+	position: absolute;
+	top:10%;
+	left: 20%;
+	color:white	;
+	font-size:17px;
+}
+
+.txtinfo
+{
+	width: 300px;
+}
+
+.txtinfo2
+{
+	width: 300px;
+	height: 50px;
+}
+
+.btninfo
+{
+	background: #d4d2d2;
+	width: 152px;
+	height: 30px;
+	font-size: 15px;
+	cursor: pointer;
+}
+.btninfo:hover
+{
+	background: black;
+	color: white;
+}
+
+.newuser
+{
+position: absolute;
+bottom: 5%;
+right: 3%;
+
+}
+.newuser input
+{
+background: black;
+	width: 150px;
+	height: 40px;
+	font-size: 15px;
+	cursor: pointer;
+	color: white;
+
+}
+.newuser input:hover
+{
+background: white;
+	width: 150px;
+	height: 40px;
+	font-size: 17px;
+	cursor: pointer;
+	color: black;
+
+
+}
+

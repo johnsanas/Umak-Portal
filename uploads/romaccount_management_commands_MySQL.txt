@@ -1,0 +1,402 @@
+mysql> help alter user;
+Name: 'ALTER USER'
+Description:
+Syntax:
+ALTER USER user_specification
+    [, user_specification] ...
+
+user_specification:
+    user PASSWORD EXPIRE
+
+The ALTER USER statement alters MySQL accounts. To use it, you must
+have the global CREATE USER privilege or the INSERT privilege for the
+mysql database. This statement was added in MySQL 5.6.6.
+
+For each account, ALTER USER expires its password. For example:
+
+ALTER USER 'jeffrey'@'localhost' PASSWORD EXPIRE;
+
+The account name uses the format described in
+http://dev.mysql.com/doc/refman/5.6/en/account-names.html. If you
+specify only the user name part of the account name, a host name part
+of '%' is used.
+
+Password expiration for an account affects the corresponding row of the
+mysql.user table: The server sets the password_expired column to 'Y'.
+
+*Warning*: In MySQL 5.6.6, ALTER USER also sets the Password column to
+the empty string, so do not use this statement until 5.6.7.
+
+After an account's password has been expired, all operations performed
+in subsequent connections to the server using the account result in an
+error until the user issues a SET PASSWORD statement to establish a new
+account password:
+
+mysql> SELECT 1;
+ERROR 1820 (HY000): You must SET PASSWORD before executing this statement
+
+mysql> SET PASSWORD = PASSWORD('new_password');
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT 1;
++---+
+| 1 |
++---+
+| 1 |
++---+
+1 row in set (0.00 sec)
+
+As of MySQL 5.6.8, this restricted mode of operation also permits SET
+statements, which is useful if the account password uses a hashing
+format that requires old_passwords to be set to a value different from
+its default.
+
+It is also possible for an administrative user to reset the account
+password, but any existing connections for the account remain under
+restriction. Clients using the account must disconnect and reconnect
+before statements can be executed successfully.
+
+It is possible after password expiration to "reset" a password by using
+SET PASSWORD to set it to its current value. As a matter of good
+policy, it is preferable to choose a different password.
+
+URL: http://dev.mysql.com/doc/refman/5.6/en/alter-user.html
+
+
+mysql> help create user;
+Name: 'CREATE USER'
+Description:
+Syntax:
+CREATE USER user_specification
+    [, user_specification] ...
+
+user_specification:
+    user
+    [
+        IDENTIFIED BY [PASSWORD] 'password'
+      | IDENTIFIED WITH auth_plugin [AS 'auth_string']
+    ]
+
+The CREATE USER statement creates new MySQL accounts. To use it, you
+must have the global CREATE USER privilege or the INSERT privilege for
+the mysql database. For each account, CREATE USER creates a new row in
+the mysql.user table and assigns the account no privileges. An error
+occurs if the account already exists.
+
+For CREATE USER statements that do not specify an IDENTIFIED WITH
+auth_plugin clause, the server associates the account with the default
+authentication plugin. As of MySQL 5.6.6, this is the plugin named by
+the --default-authentication-plugin option at server startup, or
+mysql_native_password if that option is not used. Before 5.6.6, the
+default plugin is mysql_native_password. For information about
+authentication plugins, see
+http://dev.mysql.com/doc/refman/5.6/en/pluggable-authentication.html.
+
+Each account name uses the format described in
+http://dev.mysql.com/doc/refman/5.6/en/account-names.html. For example:
+
+CREATE USER 'jeffrey'@'localhost' IDENTIFIED BY 'mypass';
+
+If you specify only the user name part of the account name, a host name
+part of '%' is used.
+
+The user specification may indicate how the user should authenticate
+when connecting to the server:
+
+o To enable the user to connect with no password (which is insecure),
+  include no IDENTIFIED BY clause:
+
+CREATE USER 'jeffrey'@'localhost';
+
+  In this case, the account uses the default authentication plugin and
+  clients must provide no password.
+
+o To assign a password, use IDENTIFIED BY with the literal plaintext
+  password value:
+
+CREATE USER 'jeffrey'@'localhost' IDENTIFIED BY 'mypass';
+
+  The account uses the default authentication plugin and clients must
+  match the given password.
+
+o To avoid specifying the plaintext password if you know its hash value
+  (the value that PASSWORD() would return for the password), specify
+  the hash value preceded by the keyword PASSWORD:
+
+CREATE USER 'jeffrey'@'localhost'
+IDENTIFIED BY PASSWORD '*90E462C37378CED12064BB3388827D2BA3A9B689';
+
+  The account uses the default authentication plugin and the has must
+  be in the format required by that plugin. Clients must match the
+  given password.
+
+o To authenticate the account using a specific authentication plugin,
+  use IDENTIFIED WITH, where auth_plugin is the plugin name. It can be
+  an unquoted name or a quoted string literal. 'auth_string' is an
+  optional quoted string literal to pass to the plugin. The plugin
+  interprets the meaning of the string, so its format is plugin
+  specific. Consult the documentation for a given plugin for
+  information about the authentication string values it accepts.
+
+CREATE USER 'jeffrey'@'localhost'
+IDENTIFIED WITH my_auth_plugin;
+
+  For connections that use this account, the server invokes the named
+  plugin and clients must provide credentials as required for the
+  authentication method that the plugin implements. If the server
+  cannot find the plugin, either at account-creation time or connect
+  time, an error occurs.
+
+The IDENTIFIED BY and IDENTIFIED WITH clauses are mutually exclusive,
+so at most one of them can be specified for a given user.
+
+For additional information about setting passwords, see
+http://dev.mysql.com/doc/refman/5.6/en/assigning-passwords.html.
+
+URL: http://dev.mysql.com/doc/refman/5.6/en/create-user.html
+
+
+mysql> help drop user;
+Name: 'DROP USER'
+Description:
+Syntax:
+DROP USER user [, user] ...
+
+The DROP USER statement removes one or more MySQL accounts and their
+privileges. It removes privilege rows for the account from all grant
+tables. To use this statement, you must have the global CREATE USER
+privilege or the DELETE privilege for the mysql database. Each account
+name uses the format described in
+http://dev.mysql.com/doc/refman/5.6/en/account-names.html. For example:
+
+DROP USER 'jeffrey'@'localhost';
+
+If you specify only the user name part of the account name, a host name
+part of '%' is used.
+
+URL: http://dev.mysql.com/doc/refman/5.6/en/drop-user.html
+
+
+
+mysql> help grant;
+Name: 'GRANT'
+Description:
+Syntax:
+GRANT
+    priv_type [(column_list)]
+      [, priv_type [(column_list)]] ...
+    ON [object_type] priv_level
+    TO user_specification [, user_specification] ...
+    [REQUIRE {NONE | ssl_option [[AND] ssl_option] ...}]
+    [WITH with_option ...]
+
+GRANT PROXY ON user_specification
+    TO user_specification [, user_specification] ...
+    [WITH GRANT OPTION]
+
+object_type:
+    TABLE
+  | FUNCTION
+  | PROCEDURE
+
+priv_level:
+    *
+  | *.*
+  | db_name.*
+  | db_name.tbl_name
+  | tbl_name
+  | db_name.routine_name
+
+user_specification:
+    user
+    [
+        IDENTIFIED BY [PASSWORD] 'password'
+      | IDENTIFIED WITH auth_plugin [AS 'auth_string']
+    ]
+
+ssl_option:
+    SSL
+  | X509
+  | CIPHER 'cipher'
+  | ISSUER 'issuer'
+  | SUBJECT 'subject'
+
+with_option:
+    GRANT OPTION
+  | MAX_QUERIES_PER_HOUR count
+  | MAX_UPDATES_PER_HOUR count
+  | MAX_CONNECTIONS_PER_HOUR count
+  | MAX_USER_CONNECTIONS count
+
+The GRANT statement grants privileges to MySQL user accounts. GRANT
+also serves to specify other account characteristics such as use of
+secure connections and limits on access to server resources. To use
+GRANT, you must have the GRANT OPTION privilege, and you must have the
+privileges that you are granting.
+
+Normally, a database administrator first uses CREATE USER to create an
+account, then GRANT to define its privileges and characteristics. For
+example:
+
+CREATE USER 'jeffrey'@'localhost' IDENTIFIED BY 'mypass';
+GRANT ALL ON db1.* TO 'jeffrey'@'localhost';
+GRANT SELECT ON db2.invoice TO 'jeffrey'@'localhost';
+GRANT USAGE ON *.* TO 'jeffrey'@'localhost' WITH MAX_QUERIES_PER_HOUR 90;
+
+However, if an account named in a GRANT statement does not already
+exist, GRANT may create it under the conditions described later in the
+discussion of the NO_AUTO_CREATE_USER SQL mode.
+
+The REVOKE statement is related to GRANT and enables administrators to
+remove account privileges. See [HELP REVOKE].
+
+When successfully executed from the mysql program, GRANT responds with
+Query OK, 0 rows affected. To determine what privileges result from the
+operation, use SHOW GRANTS. See [HELP SHOW GRANTS].
+
+URL: http://dev.mysql.com/doc/refman/5.6/en/grant.html
+
+
+mysql> help rename user;
+Name: 'RENAME USER'
+Description:
+Syntax:
+RENAME USER old_user TO new_user
+    [, old_user TO new_user] ...
+
+The RENAME USER statement renames existing MySQL accounts. To use it,
+you must have the global CREATE USER privilege or the UPDATE privilege
+for the mysql database. An error occurs if any old account does not
+exist or any new account exists. Each account name uses the format
+described in http://dev.mysql.com/doc/refman/5.6/en/account-names.html.
+For example:
+
+RENAME USER 'jeffrey'@'localhost' TO 'jeff'@'127.0.0.1';
+
+If you specify only the user name part of the account name, a host name
+part of '%' is used.
+
+RENAME USER causes the privileges held by the old user to be those held
+by the new user. However, RENAME USER does not automatically drop or
+invalidate databases or objects within them that the old user created.
+This includes stored programs or views for which the DEFINER attribute
+names the old user. Attempts to access such objects may produce an
+error if they execute in definer security context. (For information
+about security context, see
+http://dev.mysql.com/doc/refman/5.6/en/stored-programs-security.html.)
+
+The privilege changes take effect as indicated in
+http://dev.mysql.com/doc/refman/5.6/en/privilege-changes.html.
+
+URL: http://dev.mysql.com/doc/refman/5.6/en/rename-user.html
+
+
+
+mysql> help revoke;
+Name: 'REVOKE'
+Description:
+Syntax:
+REVOKE
+    priv_type [(column_list)]
+      [, priv_type [(column_list)]] ...
+    ON [object_type] priv_level
+    FROM user [, user] ...
+
+REVOKE ALL PRIVILEGES, GRANT OPTION
+    FROM user [, user] ...
+
+REVOKE PROXY ON user
+    FROM user [, user] ...
+
+The REVOKE statement enables system administrators to revoke privileges
+from MySQL accounts. Each account name uses the format described in
+http://dev.mysql.com/doc/refman/5.6/en/account-names.html. For example:
+
+REVOKE INSERT ON *.* FROM 'jeffrey'@'localhost';
+
+If you specify only the user name part of the account name, a host name
+part of '%' is used.
+
+For details on the levels at which privileges exist, the permissible
+priv_type and priv_level values, and the syntax for specifying users
+and passwords, see [HELP GRANT]
+
+To use the first REVOKE syntax, you must have the GRANT OPTION
+privilege, and you must have the privileges that you are revoking.
+
+To revoke all privileges, use the second syntax, which drops all
+global, database, table, column, and routine privileges for the named
+user or users:
+
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM user [, user] ...
+
+To use this REVOKE syntax, you must have the global CREATE USER
+privilege or the UPDATE privilege for the mysql database.
+
+URL: http://dev.mysql.com/doc/refman/5.6/en/revoke.html
+
+
+mysql> help set password;
+Name: 'SET PASSWORD'
+Description:
+Syntax:
+SET PASSWORD [FOR user] =
+    {
+        PASSWORD('cleartext password')
+      | OLD_PASSWORD('cleartext password')
+      | 'encrypted password'
+    }
+
+The SET PASSWORD statement assigns a password to an existing MySQL user
+account. When the read_only system variable is enabled, the SUPER
+privilege is required to use SET PASSWORD, in addition to whatever
+other privileges might be required.
+
+If the password is specified using the PASSWORD() or OLD_PASSWORD()
+function, the cleartext (unencrypted) password should be given as the
+argument to the function, which hashes the password and returns the
+encrypted password string. If the password is specified without using
+either function, it should be the already encrypted password value as a
+literal string. In all cases, the encrypted password string must be in
+the format required by the authentication method used for the account.
+
+With no FOR user clause, this statement sets the password for the
+current user. (To see which account the server authenticated you as,
+invoke the CURRENT_USER() function.) Any client who successfully
+connects to the server using a nonanonymous account can change the
+password for that account.
+
+With a FOR user clause, this statement sets the password for the named
+user. You must have the UPDATE privilege for the mysql database to do
+this. The user account name uses the format described in
+http://dev.mysql.com/doc/refman/5.6/en/account-names.html. The user
+value should be given as 'user_name'@'host_name', where 'user_name' and
+'host_name' are exactly as listed in the User and Host columns of the
+mysql.user table row. (If you specify only a user name, a host name of
+'%' is used.) For example, to set the password for an account with User
+and Host column values of 'bob' and '%.example.org', write the
+statement like this:
+
+SET PASSWORD FOR 'bob'@'%.example.org' = PASSWORD('cleartext password');
+
+That is equivalent to the following statements:
+
+UPDATE mysql.user SET Password=PASSWORD('cleartext password')
+  WHERE User='bob' AND Host='%.example.org';
+FLUSH PRIVILEGES;
+
+Another way to set the password is to use GRANT:
+
+GRANT USAGE ON *.* TO 'bob'@'%.example.org' IDENTIFIED BY 'cleartext password';
+
+The old_passwords system variable value determines the hashing method
+used by PASSWORD(). If you specify the password using that function and
+SET PASSWORD rejects the password as not being in the correct format,
+it may be necessary to set old_passwords to change the hashing method.
+For descriptions of the permitted values, see
+http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html.
+
+URL: http://dev.mysql.com/doc/refman/5.6/en/set-password.html
+
+
+

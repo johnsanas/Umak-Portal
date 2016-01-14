@@ -1,0 +1,250 @@
+.navigation
+{
+	border-bottom: #000 solid 1px;
+	height:15%;
+	z-index: 9999;
+	position: fixed;
+	width: 100%;
+	background: #173653;
+}
+
+.side-navigation
+{
+	padding-top: 100px;
+	padding-left: 30px;
+	padding-right: 20px;
+}
+.table-navigation
+{
+	padding-top: 90px;
+	padding-right: 50px;
+	padding-left:20px;
+}
+
+
+.user-table
+{
+	position:absolute;
+	top:25%;
+	left:26%;
+	right:7%;
+	
+}
+.user-panel
+{
+	position: absolute;
+	left: 26%;
+	top: 45%;
+	right:20%;
+
+}
+.search-box
+{
+	position: absolute;
+	left: 0%;
+	top: 0%;
+	right: 50%;
+}
+.add-btn
+{
+	position: absolute;
+	left: 100%;
+	top: 0%;
+	right: 0%;
+}
+
+.search-text
+{
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	right: 50%;
+}
+
+.add-btn
+{
+	position: absolute;
+	top: 0%;
+	left: 70%;
+	right: 0%;
+	
+}
+.add-container
+{
+	
+	padding-top:0%;
+	padding-bottom:1%;
+	background: #f0f0f0;
+
+}
+.marginer-top
+{
+	padding-top:100px;
+	padding-right: 30px;
+	padding-left: 20px;
+	 
+
+}
+.announcement-container
+{
+	padding-top:10px;
+	background: #fff;
+	border-radius: 5px;
+	
+
+}
+.annoucement-details
+{
+	
+	padding-top:0%;
+	padding-left:2%;
+	padding-right:2%;
+	
+}
+
+.annoucement-details-container
+{
+	padding-top:0%;
+	padding-left:5%;
+	padding-right:5%;
+	background: #f0f0f0;
+	border-radius: 5px;
+	
+}
+
+.new-annoucement-container
+{
+	background: #fff;
+	border-radius: 5px;
+	padding: 3%;
+	
+}
+
+.new-user-container
+{
+	position:absolute;
+	top:25%;
+	left:26%;
+	right:7%;
+	
+	
+
+}
+
+.fade-message
+{
+	position: fixed;
+	background: #16b242;
+	top:7%;
+	left: 0%;
+	right: 0%;
+	
+}
+.fade-message-fail
+{
+	position: fixed;
+	background: #FF4D4D;
+	top:7%;
+	left: 0%;
+	right: 0%;
+	
+}
+
+.fade-message-text
+{
+	padding-top:1%;
+	font-size: 25px;
+	color: white;
+}
+
+
+.confirm-message
+{
+	position: fixed;
+	background: rgba(255, 77, 77, 0.9);
+	top:40%;
+	left: 0%;
+	right: 0%;
+
+	
+}
+.add-event
+{
+
+	position:fixed;
+	top:32%;
+	left:26%;
+	right:7%;
+	background: #fff;
+	border-radius: 5px;
+
+}
+
+.add-event-container
+{
+	
+	padding-top:2%;
+	padding-left:2%;
+	padding-right:2%;
+}
+
+.announcement-text h1
+{
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.announcement-text p
+{
+	font-size: 17px;
+}
+
+.login
+{
+	
+	padding-top: 10%;
+	padding-left:5%;
+	padding-right:5%;
+	padding-bottom: 10%;
+	
+}
+.marginer
+{
+	padding-top: 120px;
+}
+
+.login-container
+{
+	background: #ffffff;
+	border-radius: 5px;
+	box-shadow: 0 2em 2em #DDDDDD;
+    opacity: .97;
+}
+
+.add-user
+{
+
+	position:absolute;
+	top:90px;
+	left:26%;
+	right:7%;
+	background: #ffffff;
+	border-radius: 5px;
+
+}
+
+.add-user-container
+{
+	
+	padding-top: 5%;
+	padding-left: 5%;
+	padding-right: 5%;
+	padding-bottom:4%;
+	
+	
+
+}
+.marginer-top
+{
+	padding-top: 70px;
+}
